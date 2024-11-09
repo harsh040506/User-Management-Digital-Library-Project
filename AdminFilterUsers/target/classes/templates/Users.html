@@ -1,0 +1,255 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Search User</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Urbanist', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #EDDFC6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+      background-color: #191A23;
+      color: #EDDFC6;
+      padding: 15px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .back-button {
+      background-color: transparent;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s;
+      margin-left: 15px;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      color: #C0C2B0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 600;
+      text-align: center;
+      margin-left: -150px;
+      flex-grow: 1;
+    }
+
+    .dark-mode-toggle {
+      background-color: transparent;
+      border: none;
+      margin-right: 15px;
+      color: #EDDFC6;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 900px;
+      background-color: #191A23;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+      margin-top: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #C0C2B0;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 70%;
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #396B6E;
+      color: #EDDFC6;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2A4E50;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #444444;
+      color: #C0C2B0;
+    }
+
+    th {
+      background-color: #2A2B36;
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #c0c2b0;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background-color: #121212;
+      color: #E0E0E0;
+    }
+
+    .container.dark-mode {
+      background-color: #1E1E1E;
+    }
+
+    header.dark-mode {
+      background-color: #1E1E1E; /* Match container color in dark mode */
+    }
+
+    button.dark-mode {
+      background-color: #A99985;
+      color: #121212;
+    }
+
+    button.dark-mode:hover {
+      background-color: #8B7764;
+    }
+
+    #toggle-mode {
+      background: none;
+      border: none;
+      color: #C0C2B0;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    #toggle-mode.dark-mode {
+      color: #C0C2B0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="http://localhost:8083/Admin/home" class="back-button">
+    <i class="fas fa-arrow-left"></i>&nbsp; <span style="text-decoration: underline;">Back to Homepage</span>
+  </a>
+  <div class="logo">
+    <i class="fas fa-user"></i> Admin Search User
+  </div>
+  <button class="dark-mode-toggle" id="toggle-mode">
+    <i class="fas fa-moon"></i>
+  </button>
+</header>
+
+<div class="container">
+  <h1>Search User</h1>
+
+  <form action="/Users/search-by-fullname" method="get">
+    <input type="text" name="name" placeholder="Search by Fullname" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <form action="/Users/search-by-username" method="get">
+    <input type="text" name="name" placeholder="Search by Username" required>
+    <button type="submit">Search</button>
+  </form>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Fullname</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.fullname}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+<!--  <a th:href="'http://localhost:8083/Admin/home'">Back to Home</a>-->
+</div>
+
+<script>
+  const toggleButton = document.getElementById('toggle-mode');
+  const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+  if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    document.querySelector('.container').classList.add('dark-mode');
+    document.querySelector('header').classList.add('dark-mode'); // Apply dark mode to header
+    toggleButton.classList.add('dark-mode');
+    toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+  }
+
+  toggleButton.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    document.querySelector('.container').classList.toggle('dark-mode');
+    document.querySelector('header').classList.toggle('dark-mode'); // Toggle dark mode for header
+    toggleButton.classList.toggle('dark-mode');
+
+    const darkModeEnabled = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', darkModeEnabled ? 'enabled' : 'disabled');
+
+    toggleButton.innerHTML = darkModeEnabled
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+  });
+</script>
+</body>
+</html>
