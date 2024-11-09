@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Urbanist', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #EDDFC6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #111111;
+      color: #ffffff;
+    }
+
+    .top-bar {
+      background-color: #191A23;
+      color: #EDDFC6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    body.dark-mode .top-bar {
+      background-color: #191A23;
+    }
+
+    .top-bar a {
+      color: #EDDFC6;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .top-bar h1 {
+      margin: 5px;
+      font-size: 29px;
+      flex-grow: 2;
+      margin-right: 120px;
+      text-align: center;
+    }
+
+    .form-container {
+      background-color: #191A23;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin: 20px auto;
+    }
+
+    body.dark-mode .form-container {
+      background-color: #191A23;
+    }
+
+    h2 {
+      color: #C0C2B0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode h2 {
+      color: #dddddd;
+    }
+
+    .operation-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .operation {
+      flex: 1;
+      margin: 0 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #C0C2B0;
+    }
+
+    body.dark-mode label {
+      color: #dddddd;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    body.dark-mode input {
+      background-color: #666666;
+      color: #ffffff;
+      border: 1px solid #888888;
+    }
+
+    button {
+      background-color: #396B6E;
+      color: #EDDFC6;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    body.dark-mode button {
+      background-color: #396B6E;
+    }
+
+    button:hover {
+      background-color: #2A4E50;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      color: #ffffff;
+    }
+
+    th {
+      background-color: #396B6E;
+    }
+
+    .success-message,
+    .error-message {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .success-message {
+      background-color: #396B6E;
+      color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+    }
+
+    .error-message {
+      color: #FF4C4C;
+    }
+
+    .dark-mode-toggle {
+      width: 20px;
+      height: 20px;
+      background: none;
+      color: #EDDFC6;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s; /* Transition for color change */
+      outline: none; /* Remove outline on focus */
+    }
+
+    .dark-mode-toggle:hover {
+      background: none; /* Remove hover effect */
+    }
+
+    .dark-mode-toggle i {
+      font-size: 20px; /* Increased icon size */
+    }
+
+    .export-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .export-buttons button {
+      margin-right: 10px;
+      width: auto;
+    }
+  </style>
+</head>
+
+<body>
+<div class="top-bar">
+  <a href="http://localhost:8082/Home/Welcome" class="back-button">
+    <i class="fas fa-arrow-left"></i> Back to Home
+  </a>
+  <h1>User Management</h1>
+  <button class="dark-mode-toggle" id="toggle-mode">
+    <i class="fas fa-moon"></i> <!-- Default icon for light mode -->
+  </button>
+</div>
+
+<div class="form-container">
+  <div class="operation-section">
+    <div class="operation">
+      <h2>Add Admin</h2>
+      <form id="addUserForm">
+        <label for="fullname">Full Name:</label>
+        <input type="text" id="fullname" placeholder="Full Name" required>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password" required>
+
+        <a href="http://localhost:8083/Admin/register" style="text-decoration: none;">
+          <button type="button">Add Admin</button>
+        </a>
+      </form>
+    </div>
+
+    <div class="operation">
+      <h2>Update User</h2>
+      <form id="updateUserForm">
+        <label for="updateId">User ID:</label>
+        <input type="number" id="updateId" placeholder="User ID" required>
+
+        <label for="updateFullname">Full Name:</label>
+        <input type="text" id="updateFullname" placeholder="Full Name" required>
+
+        <label for="updateUsername">Username:</label>
+        <input type="text" id="updateUsername" placeholder="Username" required>
+
+        <label for="updatePassword">Password:</label>
+        <input type="password" id="updatePassword" placeholder="Password" required>
+
+        <button type="submit">Update User</button>
+      </form>
+    </div>
+
+    <div class="operation">
+      <h2>Delete User</h2>
+      <form id="deleteUserForm">
+        <label for="deleteId">User ID:</label>
+        <input type="number" id="deleteId" placeholder="User ID" required>
+        <button type="submit">Delete User</button>
+      </form>
+    </div>
+  </div>
+
+  <h2>All Users</h2>
+
+  <!-- Buttons for exporting -->
+  <div class="export-buttons">
+    <a href="http://localhost:8086/users/export/pdf" style="text-decoration: none;">
+      <button id="exportPdf">Export to PDF</button>
+    </a>
+    <a href="http://localhost:8086/users/export/excel" style="text-decoration: none;">
+      <button id="exportExcel">Export to Excel</button>
+    </a>
+  </div>
+
+  <table id="userTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Full Name</th>
+      <th>Username</th>
+      <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- User data will be populated here -->
+    </tbody>
+  </table>
+
+  <div class="success-message" id="successMessage" style="display: none;">Action Successful!</div>
+  <div class="error-message" id="errorMessage" style="display: none;"></div>
+</div>
+
+<script>
+  const apiUrl = '/Admin/manage/api'; // Updated API URL
+
+  document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = {
+      fullname: document.getElementById('fullname').value,
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value
+    };
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+    handleResponse(response);
+  });
+
+  document.getElementById('updateUserForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('updateId').value;
+    const user = {
+      fullname: document.getElementById('updateFullname').value,
+      username: document.getElementById('updateUsername').value,
+      password: document.getElementById('updatePassword').value
+    };
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+    handleResponse(response);
+  });
+
+  document.getElementById('deleteUserForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('deleteId').value;
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE'
+    });
+    handleResponse(response);
+  });
+
+  async function handleResponse(response) {
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    if (response.ok) {
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+      loadUsers(); // Refresh the user table
+    } else {
+      const errorData = await response.json();
+      errorMessage.textContent = errorData.message || 'An error occurred';
+      errorMessage.style.display = 'block';
+      successMessage.style.display = 'none';
+    }
+    setTimeout(() => {
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+    }, 3000);
+  }
+
+  async function loadUsers() {
+    const response = await fetch(apiUrl);
+    const users = await response.json();
+    const userTableBody = document.getElementById('userTable').querySelector('tbody');
+    userTableBody.innerHTML = '';
+    users.forEach(user => {
+      const row = userTableBody.insertRow();
+      row.innerHTML = `<td>${user.id}</td><td>${user.fullname}</td><td>${user.username}</td><td>${user.password}</td>`;
+    });
+  }
+
+  document.getElementById('toggle-mode').addEventListener('click', () => {
+    const body = document.body;
+    const icon = document.querySelector('.dark-mode-toggle i');
+    body.classList.toggle('dark-mode');
+
+    // Toggle the icon based on the mode
+    if (body.classList.contains('dark-mode')) {
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    } else {
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+    }
+  });
+
+  // Load users on page load
+  loadUsers();
+</script>
+</body>
+</html>

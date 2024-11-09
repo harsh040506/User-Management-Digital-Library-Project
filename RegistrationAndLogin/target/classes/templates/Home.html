@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Home Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background-color: #EDDFC6; /* Light mode background */
+            color: #191A23; /* Light mode text */
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-mode {
+            background-color: #121212; /* Dark mode background */
+            color: #C0C2B0; /* Dark mode text */
+        }
+
+        .dashboard {
+            background-color: #191A23;
+            color: #C0C2B0;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            max-width: 750px;
+            margin: 50px auto; /* Center the dashboard */
+            transition: background-color 0.3s;
+        }
+
+        .dashboard_title {
+            font-size: 28px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .dashboard_user {
+            margin-top: 20px;
+        }
+
+        .dashboard_user_name {
+            font-size: 20px;
+            color: #396B6E;
+        }
+
+        .span-text {
+            margin-top: 20px;
+        }
+
+        .span-text a {
+            color: #396B6E;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .span-text a:hover {
+            color: #C0C2B0;
+        }
+
+        #toggle-mode {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #5A5A5A;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        #toggle-mode.dark-mode {
+            color: #A99985;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            const toggleButton = document.getElementById('toggle-mode');
+            const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+            // Apply the saved theme on page load
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                toggleButton.classList.add('dark-mode');
+            }
+
+            // Toggle the theme and save preference
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                toggleButton.classList.toggle('dark-mode');
+                const darkModeEnabled = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', darkModeEnabled ? 'enabled' : 'disabled');
+            });
+
+            // Redirect to /library if the user is authenticated
+            const isAuthenticated = /*[[${#authorization.expression('isAuthenticated')}]]*/ false;
+            if (isAuthenticated) {
+                window.location.href = '/library';
+            }
+        };
+    </script>
+</head>
+
+<body>
+<button id="toggle-mode">
+    <i class="fas fa-adjust"></i> <!-- Default icon -->
+</button>
+
+<div class="dashboard">
+    <h1 class="dashboard_title">Welcome to the Library</h1>
+    <div class="dashboard_user">
+        <h2 th:text="${userdetail.fullname}" class="dashboard_user_name"></h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 20px;">
+            <div class="span-text" style="text-align: left;">
+                    <span sec:authorize="isAuthenticated">
+                        <a th:href="'http://localhost:8082/Home/Library'">Go to Library</a>
+                    </span>
+            </div>
+
+            <div class="span-text" style="text-align: right;">
+      <span sec:authorize="isAuthenticated">
+        <a th:href="@{/User/logout}">Logout</a>
+      </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        const toggleButton = document.getElementById('toggle-mode');
+        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+        // Apply the saved theme on page load
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            toggleButton.classList.add('dark-mode');
+            toggleButton.innerHTML = '<i class="fas fa-sun"></i>'; // Change icon to sun
+        } else {
+            toggleButton.innerHTML = '<i class="fas fa-moon"></i>'; // Default icon
+        }
+
+        // Toggle the theme and save preference
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleButton.classList.toggle('dark-mode');
+
+            const darkModeEnabled = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', darkModeEnabled ? 'enabled' : 'disabled');
+
+            // Toggle the icon
+            toggleButton.innerHTML = darkModeEnabled
+                ? '<i class="fas fa-sun"></i>' // Sun icon for dark mode
+                : '<i class="fas fa-moon"></i>'; // Moon icon for light mode
+        });
+
+        // Redirect to /library if the user is authenticated
+        const isAuthenticated = /*[[${#authorization.expression('isAuthenticated')}]]*/ false;
+        if (isAuthenticated) {
+            window.location.href = '/library';
+        }
+    };
+</script>
+</body>
+</html>
