@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export User Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Urbanist', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #EDDFC6;
+            transition: background-color 0.3s;
+        }
+
+        header {
+            background-color: #191A23;
+            color: #C0C2B0;
+            padding: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+            margin-left: 15px;
+            text-decoration: none; /* Remove underline */
+        }
+
+        .back-button:hover {
+            color: #C0C2B0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-left: -150px;
+            flex-grow: 1;
+        }
+
+        .dark-mode-toggle {
+            background-color: transparent;
+            border: none;
+            margin-right: 15px;
+            color: #EDDFC6; /* Consistent color */
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .container {
+            width: 90%;
+            margin-top: 100px;
+            max-width: 800px;
+            background-color: #191A23;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        h2 {
+            text-align: center;
+            color: #C0C2B0;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #396B6E;
+            color: #EDDFC6;
+        }
+
+        .btn-primary:hover {
+            background-color: #2A4E50;
+        }
+
+        .btn-secondary {
+            background-color: #A99985;
+            color: #121212;
+        }
+
+        .btn-secondary:hover {
+            background-color: #8B7764;
+        }
+
+        .export-all-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .export-all-buttons a {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            color: #EDDFC6;
+            background-color: #396B6E;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .export-all-buttons a:hover {
+            background-color: #2A4E50;
+            transform: translateY(-2px);
+        }
+
+        #toggle-mode {
+            background: none;
+            border: none;
+            color: #EDDFC6; /* Consistent color */
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+        }
+
+        .dark-mode .container {
+            background-color: #1E1E1E;
+        }
+
+        .dark-mode header {
+            background-color: #1E1E1E; /* Match container in dark mode */
+            color: #C0C2B0; /* Header text color */
+        }
+
+        .dark-mode #toggle-mode {
+            color: #C0C2B0; /* Toggle color in dark mode */
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="http://localhost:8083/Admin/home" class="back-button">
+        <i class="fas fa-arrow-left"></i>&nbsp; <span style="text-decoration: underline;">Back to Homepage</span>
+    </a>
+    <div class="logo">
+        <i class="fas fa-file-export"></i> Export User Data
+    </div>
+    <button class="dark-mode-toggle" id="toggle-mode">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+
+<div class="container">
+    <h2>Export User Data</h2>
+
+    <!-- Full Name Export -->
+    <div class="form-group">
+        <input type="text" id="fullname" placeholder="Search by Full Name" required>
+        <button class="btn-primary" onclick="redirectToFullnameExcel()">Excel</button>
+        <button class="btn-secondary" onclick="redirectToFullnamePDF()">PDF</button>
+    </div>
+
+    <!-- Username Export -->
+    <div class="form-group">
+        <input type="text" id="username" placeholder="Search by Username" required>
+        <button class="btn-primary" onclick="redirectToUsernameExcel()">Excel</button>
+        <button class="btn-secondary" onclick="redirectToUsernamePDF()">PDF</button>
+    </div>
+
+    <hr style="border-top: 1px solid #444;">
+
+    <!-- Export All Users -->
+    <div class="export-all-buttons">
+        <a href="/users/export/excel" class="btn-primary">Export All Users (Excel)</a>
+        <a href="/users/export/pdf" class="btn-secondary">Export All Users (PDF)</a>
+    </div>
+</div>
+
+<script>
+    function redirectToFullnameExcel() {
+        const fullname = document.getElementById('fullname').value;
+        window.location.href = `/users/export/excel/fullname/${encodeURIComponent(fullname)}`;
+    }
+
+    function redirectToFullnamePDF() {
+        const fullname = document.getElementById('fullname').value;
+        window.location.href = `/users/export/pdf/fullname/${encodeURIComponent(fullname)}`;
+    }
+
+    function redirectToUsernameExcel() {
+        const username = document.getElementById('username').value;
+        window.location.href = `/users/export/excel/username/${encodeURIComponent(username)}`;
+    }
+
+    function redirectToUsernamePDF() {
+        const username = document.getElementById('username').value;
+        window.location.href = `/users/export/pdf/username/${encodeURIComponent(username)}`;
+    }
+
+    // Dark Mode Toggle Logic
+    const toggleButton = document.getElementById('toggle-mode');
+    const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+    toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const darkModeEnabled = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', darkModeEnabled ? 'enabled' : 'disabled');
+        toggleButton.innerHTML = darkModeEnabled ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+</script>
+
+</body>
+</html>

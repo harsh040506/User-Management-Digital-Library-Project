@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Urbanist', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #EDDFC6; /* Light background */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .form-container {
+            background-color: #191A23; /* Dark form background */
+            width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        h2 {
+            color: #C0C2B0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #C0C2B0;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #396B6E;
+            color: #EDDFC6;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2A4E50;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #C0C2B0;
+        }
+
+        .error-message,
+        .logout-message {
+            background-color: #396B6E;
+            color: #fff;
+            padding: 10px;
+            border-radius: 3px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #C0C2B0;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+
+        .form-container.dark-mode {
+            background-color: #1E1E1E;
+        }
+
+        button.dark-mode {
+            background-color: #A99985;
+            color: #121212;
+        }
+
+        button.dark-mode:hover {
+            background-color: #8B7764;
+        }
+
+        #toggle-mode {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #5A5A5A;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #toggle-mode.dark-mode {
+            color: #C0C2B0;
+        }
+    </style>
+</head>
+
+<body>
+
+<button id="toggle-mode"><i class="fas fa-moon"></i></button>
+
+<div class="form-container">
+    <div th:if="${param.error}">
+        <div class="error-message">
+            <p>Invalid Username or Password</p>
+        </div>
+    </div>
+
+    <div th:if="${param.logout}">
+        <div class="logout-message">
+            <p>Logout Successful!</p>
+        </div>
+    </div>
+
+    <h2>Admin Login</h2>
+    <form th:action="@{/Admin/login}" method="post" role="form" th:object="${admin}">
+        <label for="username">Username:</label>
+        <input th:field="*{username}" type="text" id="username" name="username"
+               placeholder="Enter your Username" required>
+
+        <label for="password">Password:</label>
+        <input th:field="*{password}" type="password" id="password" name="password"
+               placeholder="Enter your Password" required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    const toggleButton = document.getElementById('toggle-mode');
+    const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+    // Apply the saved theme on page load
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.form-container').classList.add('dark-mode');
+        toggleButton.classList.add('dark-mode');
+        toggleButton.innerHTML = '<i class="fas fa-sun"></i>'; // Change icon to sun
+    }
+
+    // Toggle the theme and save preference
+    toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        document.querySelector('.form-container').classList.toggle('dark-mode');
+        toggleButton.classList.toggle('dark-mode');
+
+        const darkModeEnabled = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', darkModeEnabled ? 'enabled' : 'disabled');
+
+        // Toggle the icon
+        toggleButton.innerHTML = darkModeEnabled
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+    });
+</script>
+
+</body>
+</html>
